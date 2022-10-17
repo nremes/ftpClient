@@ -3,7 +3,6 @@
 <head>
     <title>Spring | Welcome</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <script src="../js/bootstrap/bootstrap.bundle.js" type="text/javascript"></script>
 </head>
 <body style="">
     <style>
@@ -11,6 +10,15 @@
         <%@include file="../css/bootstrap/bootstrap.min.css"%>
     </style>
 
+
+    <c:choose>
+        <c:when test="${downloadingSuccess == true}">
+            <h3>Downloaded successfully.</h3>
+        </c:when>
+        <c:when test="${downloadingSuccess == false}">
+            <h3>Downloading failed.</h3>
+        </c:when>
+    </c:choose>
 
 
     <c:choose>
@@ -22,7 +30,7 @@
             <form class="connection_form" action="filesList">
                 <input type="submit" value="Show files">
             </form>
-            <form action="closeConnection">
+            <form action="closeConnection" class="connection_form">
                 <input type="submit" value="Destroy connection">
             </form>
         </c:otherwise>

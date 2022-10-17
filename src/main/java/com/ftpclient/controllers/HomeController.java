@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -21,7 +20,6 @@ enum FileMode {
 }
 
 @Controller
-//@RequestMapping("/")
 public class HomeController {
     private final String ENCODING = "UTF-8";
     FtpClientBean ftpClientBean;
@@ -103,29 +101,32 @@ public class HomeController {
 
 
     @GetMapping(value = "/downloadFile")
-    public String downloadFile(@RequestParam(name = "file") File file) {
+    public String downloadFile(@RequestParam(name = "file") File file, Model model) {
         FileOutputStream fileOutputStream;
-        File dest = chooseFileFromJFileChooser(FileMode.DIRECTORY);
+        File dest = chooseFileFromJFileChooser(FileMode.FILE);
         try {
-            fileOutputStream = new FileOutputStream(dest);
+            fileOutputStream = new FileOutputStream(dest + "/" + file.getName());
         } catch (FileNotFoundException e) {
             System.out.println("Downloading failed");
             throw new RuntimeException(e);
         }
-        ftpClientBean.downloadFile(file, fileOutputStream);
-        return "filesListing";
+        boolean success = ftpClientBean.downloadFile(file, fileOutputStream);
+        model.addAttribute("downloadingSuccess", success);
+        model.addAttribute("ftpClientIsConnected", ftpClientBean.isConnected());
+        return "home";
     }
 
 
     private File chooseFileFromJFileChooser(FileMode mode) {
+        System.setProperty("java.awt.headless", "false"); //Exception turns off
         File selectedFile = null;
         JFileChooser jFileChooser = new JFileChooser("C:");
-        int retValue = jFileChooser.showSaveDialog(null);
         if(mode.name().equals("FILE")) {
             jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         } else {
             jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         }
+        int retValue = jFileChooser.showOpenDialog(null);
         if(retValue == JFileChooser.APPROVE_OPTION) {
             selectedFile = jFileChooser.getSelectedFile();
         }

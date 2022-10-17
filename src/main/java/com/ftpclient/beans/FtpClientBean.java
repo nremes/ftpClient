@@ -85,15 +85,19 @@ public class FtpClientBean {
     }
 
 
-    public void downloadFile(File file, FileOutputStream dest) {
+    public boolean downloadFile(File file, FileOutputStream dest) {
         if(ftp != null) {
             try {
                 ftp.retrieveFile(file.getPath(), dest);
+                System.out.println("Successfully downloaded.");
+                return true;
             } catch (IOException e) {
                 System.out.println("Downloading failed.");
                 e.getStackTrace();
+                return false;
             }
         }
+        return false;
     }
 
 

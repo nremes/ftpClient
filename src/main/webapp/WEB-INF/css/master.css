@@ -1,12 +1,12 @@
 @font-face {
-    font-family: Kabana;
-    src: url("/../font/KABANA_BOLD.TTF");
+    font-family: "Kabana";
+    src: url("/../font/KABANA_BOLD.TTF") format("truetype");
     font-weight: bold;
 }
 
 @font-face {
-    font-family: Kabana;
-    src: url("/../font/KABANA_REGULAR.TTF");
+    font-family: "Kabana";
+    src: url("/../font/KABANA_REGULAR.TTF") format("truetype");
     font-style: normal;
     font-weight: normal;
 }
@@ -14,7 +14,7 @@
 body {
     text-align: center !important;
     padding-top: 100px !important;
-    font-family: "Kabana" !important;
+    font-family: "Kabana";
 }
 
 .connection_form {
